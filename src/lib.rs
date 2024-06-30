@@ -239,4 +239,8 @@ pub enum Error {
     /// header for block hash {0} not found
     #[display(doc_comments)]
     HeaderHashNotFound(BlockHash),
+
+    /// transaction invalid. {0}
+    #[display(doc_comments)]
+    InvalidTransaction(String),
 }

@@ -226,9 +226,12 @@ impl AsyncClient {
             .send()
             .await?;
 
-        match resp.error_for_status() {
+        match resp.error_for_status_ref() {
             Ok(_) => Ok(()),
-            Err(err) => Err(Error::Reqwest(err))
+            Err(_) => {
+                let rpc_message = resp.text().await.map_err(|err|Error::Reqwest(err))?;
+                Err(Error::InvalidTransaction(rpc_message))
+            }
         }
     }
 
